@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { Post } from '../types/Post';
+import axios from 'axios';
 
 const PostDetailPage: React.FC = () => {
     // URLパラメータ : id を取得
     const { id } = useParams();
-
     // 取得した投稿データをステート管理
     const [post, setPost] = useState<Post | null>(null);
     const [error, setError] = useState('');
+    // ローデlング状態を管理
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         // idがない場合は処理を終了
