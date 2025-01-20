@@ -8,9 +8,13 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* 一覧 */}
         <Route path="/posts" element={<PostListPage />} />
-        <Route path="/posts/new" element={<PostNewPage />} />
+        {/* 詳細ページ */}
         <Route path="/posts/:id" element={<PostDetailPage />} />
+        {/* 新規作成 */}
+        <Route path="/posts/new" element={<PostNewPage />} />
+        {/* 編集 */}
         <Route path="/posts/:id/edit" element={<PostEditPage />} />
       </Routes>
     </BrowserRouter>
