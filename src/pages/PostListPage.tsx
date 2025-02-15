@@ -1,18 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Post } from '../types/Post';
 
-// interface Post {
-//     id: number;
-//     title: string;
-//     content: string;
-// }
-
 const PostListPage: React.FC = () => {
     const [posts, setPosts] = useState<Post[]>([]);
 
     //初回マウント時、APIからデータを取得
     useEffect(() => {
-        fetch('http://localhost:5174/posts/')
+        fetch('http://localhost:5175/posts/')
             // .then((res) => console.log(res))
             .then((res) => res.json())
             .then((data: Post[]) => {

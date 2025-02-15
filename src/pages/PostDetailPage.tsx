@@ -9,32 +9,35 @@ const PostDetailPage: React.FC = () => {
     // 取得した投稿データをステート管理
     const [post, setPost] = useState<Post | null>(null);
     const [error, setError] = useState('');
-    // ローデlング状態を管理
+    // ローディング状態を管理
     const [loading, setLoading] = useState(true);
 
+    // useEffect関連からaxiosの形に変更する
     useEffect(() => {
-        // idがない場合は処理を終了
-        if (!id) return;
+        // マウント(または id 変更)時に投稿詳細を取得
+        const fetchPost = async () => {
+            try {
+                // idがない場合は処理を終了
+                if (!id) return;
 
-        // posts/:id のエンドポイントにリクエストを送り、投稿1件を取得
-        fetch(`http://localhost:5174/posts/${id}`)
-            .then((res) => {
-                console.log(id);
-                console.log(res);
-                if (!res.ok) {
-                    throw new Error('Post not found');
-                }
-                return res.json();
-            })
-            .then((data: Post) => setPost(data))
-            .catch((err) => {
+                // axiosでGETリクエスト
+                const response = await axios.get<Post>(`http://localhost:5175/posts/${id}`);
+                //取得したデータはresponse.dataに格納される
+                setPost(response.data);
+            } catch (err) {
                 console.error(err);
-                setError('投稿が見つかりませんでした');
-            });
+                setError('投稿が見つかりませんでした。');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchPost();
+
     }, [id]);
 
-    // データ取得が完了していないときにローディング
-    if (!post && !error) {
+    // ローディング中
+    if (loading) {
         return <div>Loading...</div>;
     }
 
